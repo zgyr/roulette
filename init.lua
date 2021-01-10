@@ -1,14 +1,12 @@
-local component = require('component')
 local chr = require('unicode').char(0x2580)
-local gpu = component.gpu
-local inflate = component.data.inflate
+local gpu = add_component('gpu')
+local screen = add_component('screen')
+local inflate = add_component('data').inflate
 
 local function draw()
   local colors = {0x1aac28, 0xffff00, 0xff0000, 0, [0] = 0x06660f}
-  local file = io.open('image', 'r')
-  local text = inflate(file:read('a'))
-  file:close()
-  component.screen.setPrecise(true)
+  local text = inflate(fs_read('image'))
+  screen.setPrecise(true)
   gpu.setResolution(97, 80)
   gpu.setBackground(colors[0])
   gpu.fill(1, 1, 97, 80, ' ')
@@ -29,9 +27,11 @@ end
 local function main()
   draw()
   gpu.setForeground(0)
-  local event = require('event')
   while true do
-    local e = {event.pull('touch')}
+    local e = {computer.pullSignal(1)}
+    if e[1] == 'touch' then
+      
+    end
   end
 end
 
